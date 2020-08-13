@@ -2,6 +2,7 @@
 
 namespace DrudgeRajen\VoyagerDeploymentOrchestrator\ContentManager;
 
+use Carbon\Carbon;
 use TCG\Voyager\Models\DataType;
 
 class ContentManager
@@ -116,6 +117,10 @@ class ContentManager
         [$dataType, $stub] = $this->populateTranslationStatements($stub, $dataType);
 
         $dataTypeArray = $dataType->toArray();
+
+        // Convert dates back to datetime
+        $dataTypeArray['created_at'] = $dataType->created_at->toDateTimeString();
+        $dataTypeArray['updated_at'] = $dataType->updated_at->toDateTimeString();
 
         // Here, we cannot do $dataType->unsetRelations('translations')
         // because voyager first fires events and then saves translations.
